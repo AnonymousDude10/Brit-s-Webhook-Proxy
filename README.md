@@ -5,7 +5,7 @@ A lightweight Express.js service that forwards HTTP requests to Discord webhooks
 ## Features
 
 - Simple API endpoint to forward webhook data to Discord
-- Built-in rate limiting (10 requests per minute)
+- Built-in rate limiting (100 requests per minute)
 - Error handling with consistent response format
 - Environment variable configuration
 
@@ -13,8 +13,8 @@ A lightweight Express.js service that forwards HTTP requests to Discord webhooks
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/brits-webhook-proxy.git
-cd brits-webhook-proxy
+git clone https://github.com/AnonymousDude10/Brits-Webhook-Proxy.git
+cd Brits-Webhook-Proxy
 
 # Install dependencies
 npm install
@@ -75,7 +75,7 @@ All responses follow this structure:
 
 ## Rate Limiting
 
-The service limits requests to 10 per minute per IP address.
+The service limits requests to 100 per minute per IP address.
 
 ## License
 
