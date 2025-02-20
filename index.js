@@ -10,56 +10,53 @@ const limiter = rateLimit({
   windowMs: 60 * 1000,
   max: 10,
   message: {
-    Message: "Too many requests, please try again later.",
-    ClientError: true,
-    ServerError: false,
+    message: "Too many requests, please try again later.",
+    clientError: true,
+    serverError: false,
   },
 });
+
 app.use(limiter);
 
-app.post("/api/webhooks/:WebhookID/:WebhookToken", async (req, res) => {
+app.post("/api/webhooks/:webhookId/:webhookToken", async (req, res) => {
   try {
-    const WebhookID = req.params.WebhookID;
-    const WebhookToken = req.params.WebhookToken;
-
-    const DiscordWebhookURL = `https://discord.com/api/webhooks/${WebhookID}/${WebhookToken}`;
-    const Request = await fetch(DiscordWebhookURL, {
+    const webhookId = req.params.webhookId;
+    const webhookToken = req.params.webhookToken;
+    const discordWebhookUrl = `https://discord.com/api/webhooks/${webhookId}/${webhookToken}`;
+    
+    const request = await fetch(discordWebhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(req.body),
     });
-
-    const LocaleString = new Date().toLocaleString();
-
-    if (Request.ok) {
-      console.log(`✅ | Webhook forwarded successfully ${LocaleString}`);
+    
+    const localeString = new Date().toLocaleString();
+    
+    if (request.ok) {
+      console.log(`✅ | Webhook forwarded successfully ${localeString}`);
       return res.status(200).json({
-        Message: "Webhook forwarded successfully",
-        ClientError: false,
-        ServerError: false,
+        message: "Webhook forwarded successfully",
+        clientError: false,
+        serverError: false,
       });
     } else {
-      const Decoded = await Request.json();
-      console.log(
-        `⚠️ | An error occured while forwarding webhook ${LocaleString}`
-      );
+      const decoded = await request.json();
+      console.log(`⚠️ | An error occured while forwarding webhook ${localeString}`);
       return res.status(400).json({
-        Message: Decoded,
-        ClientError: true,
-        ServerError: false,
+        message: decoded,
+        clientError: true,
+        serverError: false,
       });
     }
   } catch (error) {
     return res.status(500).json({
-      Message: error.message ?? null,
-      ClientError: false,
-      ServerError: true,
+      message: error.message ?? null,
+      clientError: false,
+      serverError: true,
     });
   }
 });
 
 app.listen(process.env.PORT ?? 3000, () => {
-  console.log(
-    `✅ | Express Server is running on port ${process.env.PORT ?? 3000}`
-  );
+  console.log(`✅ | Express Server is running on port ${process.env.PORT ?? 3000}`);
 });
