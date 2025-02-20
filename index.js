@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 const limiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: 100,
   message: {
     message: "Too many requests, please try again later.",
     clientError: true,
